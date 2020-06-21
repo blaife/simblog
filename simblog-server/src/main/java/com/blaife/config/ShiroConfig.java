@@ -32,16 +32,10 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Autowired
-    RedisSessionDAO redisSessionDAO;
-
-    @Autowired
-    RedisCacheManager redisCacheManager;
-
-    @Autowired
     JwtFilter jwtFilter;
 
     @Bean
-    public SessionManager sessionManager() {
+    public SessionManager sessionManager(RedisSessionDAO redisSessionDAO) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 
         // inject redisSessionDAO
@@ -50,7 +44,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SessionsSecurityManager securityManager(AccountRealm accountRealm, SessionManager sessionManager) {
+    public SessionsSecurityManager securityManager(AccountRealm accountRealm, SessionManager sessionManager, RedisCacheManager redisCacheManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(accountRealm);
 
         //inject sessionManager
@@ -66,7 +60,7 @@ public class ShiroConfig {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
 
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/**", "authc");
+        filterMap.put("/**", "jwt");
 
         chainDefinition.addPathDefinitions(filterMap);
         return chainDefinition;
