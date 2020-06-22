@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 
@@ -39,16 +41,19 @@ public class Blog implements Serializable {
     /**
      * 标题
      */
+    @NotBlank(message = "标题不能为空")
     private String title;
 
     /**
      * 摘要
      */
+    @NotBlank(message = "摘要不能为空")
     private String description;
 
     /**
      * 内容
      */
+    @NotBlank(message = "内容不能为空")
     private String content;
 
     /**
