@@ -28,8 +28,8 @@
         data() {
             return {
                 ruleForm: {
-                    username: '',
-                    password: ''
+                    username: 'blaife',
+                    password: 'blaife'
                 },
                 rules: {
                     username: [
@@ -47,7 +47,22 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+
+                        const _this = this;
+
+                        this.$axios.post('http://localhost:8081/login', this.ruleForm).then(res => {
+
+                            const jwt = res.headers['authorization'];
+                            const userInfo = res.data.data;
+
+                            _this.$store.commit("SET_TOKEN", jwt);
+                            _this.$store.commit("SET_USERINFO", userInfo);
+
+                            console.log(_this.$store.getters.getUser);
+
+                            _this.$router.push("/blogs");
+                        });
+
                     } else {
                         console.log('error submit!!');
                         return false;
