@@ -50,15 +50,13 @@
 
                         const _this = this;
 
-                        this.$axios.post('http://localhost:8081/login', this.ruleForm).then(res => {
+                        this.$axios.post('/login', this.ruleForm).then(res => {
 
                             const jwt = res.headers['authorization'];
                             const userInfo = res.data.data;
 
                             _this.$store.commit("SET_TOKEN", jwt);
                             _this.$store.commit("SET_USERINFO", userInfo);
-
-                            console.log(_this.$store.getters.getUser);
 
                             _this.$router.push("/blogs");
                         });
