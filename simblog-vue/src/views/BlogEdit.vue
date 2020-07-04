@@ -7,6 +7,7 @@
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="ruleForm.title"></el-input>
                 </el-form-item>
+
                 <el-form-item label="摘要" prop="description">
                     <el-input type="textarea" v-model="ruleForm.description"></el-input>
                 </el-form-item>
@@ -82,14 +83,13 @@
             }
         },
         created() {
-
             const blogId = this.$route.params.blogId;
-            console.log(blogId)
+            console.log(blogId);
+            const _this = this;
 
             if (blogId) {
                 this.$axios.get('blog/' + blogId).then(res => {
                     const blog = res.data.data;
-                    const _this = this;
                     _this.ruleForm.id = blog.id;
                     _this.ruleForm.title = blog.title;
                     _this.ruleForm.description = blog.description;
