@@ -51,22 +51,22 @@ public class BlogController {
 
     @RequiresAuthentication
     @PostMapping("/blog/edit")
-    public Result list(@Validated @RequestBody Blog blog) {
+    public Result edit(@Validated @RequestBody Blog blog) {
 
         Blog temp = null;
         if (blog.getId() != null) {
             temp = blogService.getById(blog.getId());
             // 只能对自己的文章进行编辑
-            Assert.isTrue(temp.getUserId() == ShiroUtils.getProfile().getId(), "你没有修改权限");
+            Assert.isTrue(temp.getUserId() == ShiroUtils.getProfile().getId().longValue(), "你没有修改权限");
         } else {
             temp = new Blog();
             temp.setUserId(ShiroUtils.getProfile().getId());
-            // temp.setCreated(LocalDateTime.now());
+            temp.setCreated(LocalDateTime.now());
             temp.setStatus(0);
         }
         BeanUtils.copyProperties(blog, temp, "id","userId","created","status");
 
-        blogService.save(temp);
+        blogService.saveOrUpdate(temp);
 
         return Result.succ(null);
     }
