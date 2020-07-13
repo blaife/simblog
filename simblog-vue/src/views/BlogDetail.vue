@@ -4,7 +4,7 @@
 
         <div class="mblog">
             <h2> {{blog.title}}</h2>
-            <el-link icon="el-icon-edit">
+            <el-link icon="el-icon-edit" v-if="ownBlog">
                 <router-link :to="{name: 'BlogEdit', params: { blogId: blog.id }}">编辑</router-link>
             </el-link>
             <el-divider></el-divider>
@@ -28,7 +28,8 @@
                     id: "",
                     title: "",
                     content: ""
-                }
+                },
+                ownBlog:false
             }
         },
         created() {
@@ -47,6 +48,8 @@
                 var result = md.render(blog.content);
 
                 _this.blog.content = result;
+
+                _this.ownBlog = (blog.userId === _this.$store.getters.getUser.id);
             })
         }
     }
